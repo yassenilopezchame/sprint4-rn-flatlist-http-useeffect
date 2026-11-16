@@ -1,19 +1,19 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../config/constants';
 
-// ✍️ LO PROGRAMAS TÚ (Pasos 3 al 10)
-//
-// Sigue la GUIA_ALUMNO.md. Cada TODO indica en qué paso debes trabajar
-// en ese punto. Puedes borrar los comentarios TODO conforme los resuelvas.
-//
-// Los estilos de abajo ya están listos. Nombres disponibles:
-//   container, title, input, loader, separator, listContent, footer, footerError
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import CharacterCard from '../components/CharacterCard';
+import StateMessage from '../components/StateMessage';
+import { getCharacters } from '../services/charactersService';
+import { COLORS, DEBOUNCE_MS } from '../config/constants';
 
-// TODO Paso 3: importa de 'react' lo que necesites y trae getCharacters del servicio.
 // TODO Paso 5: importa lo que falte de 'react-native' y el componente CharacterCard.
 
 export default function CharactersScreen() {
-  // TODO Paso 3: declara los estados (personajes, carga, error).
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
   // TODO Paso 4: primera carga de datos con useEffect.
   // TODO Paso 6: estados de carga / error y reintento.
   // TODO Paso 8: paginación (estado extra + función para cargar más).
