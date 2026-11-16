@@ -1,33 +1,56 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS } from '../config/constants';
-
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ActivityIndicator, FlatList, StyleSheet, } from 'react-native';
 import CharacterCard from '../components/CharacterCard';
 import StateMessage from '../components/StateMessage';
 import { getCharacters } from '../services/charactersService';
 import { COLORS, DEBOUNCE_MS } from '../config/constants';
 
-// TODO Paso 5: importa lo que falte de 'react-native' y el componente CharacterCard.
-
 export default function CharactersScreen() {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); 
-  // TODO Paso 4: primera carga de datos con useEffect.
-  // TODO Paso 6: estados de carga / error y reintento.
-  // TODO Paso 8: paginación (estado extra + función para cargar más).
-  // TODO Paso 9: pull to refresh.
-  // TODO Paso 10: búsqueda con debounce.
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const { results } = await getCharacters({ page: 1 });
+        if (cancelled) return;
+        setCharacters(results);
+      } catch (e) {
+        if (!cancelled) setError(e.message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rick and Morty</Text>
 
-      {/* TODO Paso 10: aquí va el campo de búsqueda. */}
-
-      {/* TODO Paso 5: sustituye este texto por tu FlatList. */}
-      <Text style={styles.placeholder}>Aquí aparecerá la lista de personajes.</Text>
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color={COLORS.primary}
+          style={styles.loader}
+        />
+      ) : error ? (
+        <StateMessage message={error} />
+      ) : (
+        <FlatList
+          data={characters}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => <CharacterCard character={item} />}
+          contentContainerStyle={styles.listContent}
+        />
+      )}
     </View>
   );
 }

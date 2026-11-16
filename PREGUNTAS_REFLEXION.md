@@ -19,20 +19,17 @@ Yasseni de Jesús López Chamé
 ## Paso 2 · Petición HTTP
 
 **¿Qué diferencia hay entre que `fetch` "falle" y que el servidor responda con un error? ¿Qué debo revisar en la respuesta?**
-
-> 
+> `fetch` solo rechaza su promesa cuando **no hubo respuesta**: fallo de red, DNS, timeout, CORS, modo avión. Si el servidor respondió (aunque sea con 4xx o 5xx), la promesa se **resuelve** normalmente y el error está "escondido" en la respuesta. Por eso, después de `await fetch`, debo revisar `response.ok` (que es `true` para 200–299) o `response.status` para decidir si es un error HTTP y lanzar mi propio `Error`. En esta práctica, además, el 404 por búsqueda sin resultados se trata como caso válido ("lista vacía"), no como error.
 
 ## Paso 3 · Estado
 
 **¿Por qué guardo los personajes en estado y no en una variable normal?**
-
-> 
+> Porque React solo vuelve a renderizar cuando cambia un **estado** (o una prop). Si guardara los personajes en una variable normal (`let characters = ...`), la asignación se perdería en el siguiente render y la UI nunca se actualizaría. `useState` conserva el valor entre renders y, al llamar al setter, React sabe que debe redibujar el componente con los nuevos datos.
 
 ## Paso 4 · useEffect
 
 1. **¿Qué pasa si omito por completo el arreglo de dependencias?**
-
-> 
+> El efecto se ejecuta **después de cada render** (incluido el primer montaje). Si dentro del efecto llamo a un setter de estado, provoco un nuevo render → nuevo efecto → bucle infinito de peticiones y renders.
 
 2. **¿Qué significa dejar el arreglo vacío?**
 
