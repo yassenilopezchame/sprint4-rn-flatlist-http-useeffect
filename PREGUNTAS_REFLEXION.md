@@ -32,22 +32,18 @@ Yasseni de Jesús López Chamé
 > El efecto se ejecuta **después de cada render** (incluido el primer montaje). Si dentro del efecto llamo a un setter de estado, provoco un nuevo render → nuevo efecto → bucle infinito de peticiones y renders.
 
 2. **¿Qué significa dejar el arreglo vacío?**
-
-> 
+> Que el efecto se ejecuta **una sola vez al montar** el componente (y su limpieza al desmontarlo). Es lo que quería para la carga inicial: pedir la primera página solo cuando la pantalla aparece.
 
 3. **¿Por qué la función que recibe `useEffect` no debe ser `async` directamente?**
-
-> 
+> Porque `useEffect` espera que la función devuelva **una función de limpieza** (o `undefined`). Una función `async` siempre devuelve una **Promise**, y React no sabría qué hacer con ella (no puede usarla como cleanup y avisa con advertencia). La solución es declarar dentro una función `async` (`load()`) y llamarla, o usar una IIFE `(async () => { ... })()`, devolviendo la limpieza de forma síncrona.
 
 ## Paso 5 · FlatList
 
 1. **¿Para qué sirve la prop que extrae la llave de cada elemento?**
-
-> 
+> `keyExtractor` devuelve un identificador **único y estable** por elemento. React lo usa para reconciliar la lista: saber qué filas se mantienen, cuáles se agregan o eliminan, y evitar re-renderizados innecesarios. Sin él (o con llaves duplicadas) aparece la advertencia de *keys* y puede haber comportamientos raros al paginar o filtrar. Debe devolver un **string**.
 
 2. **¿Por qué usar `FlatList` en lugar de un `ScrollView` con `.map()`?**
-
-> 
+> `ScrollView` renderiza **todos** los hijos a la vez, aunque no se vean; con muchos elementos consume mucha memoria y va lento. `FlatList` es **virtualizada**: solo monta las filas visibles (y un pequeño margen), recicla las que salen de pantalla y ofrece props listas para paginación (`onEndReached`), pull to refresh (`refreshing`/`onRefresh`), separadores y lista vacía. Es la opción correcta para listas largas o potencialmente infinitas.
 
 ## Paso 6 · Carga y error
 

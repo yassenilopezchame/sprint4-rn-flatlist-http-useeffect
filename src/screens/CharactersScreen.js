@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ActivityIndicator, FlatList, StyleSheet, } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import CharacterCard from '../components/CharacterCard';
 import StateMessage from '../components/StateMessage';
 import { getCharacters } from '../services/charactersService';
