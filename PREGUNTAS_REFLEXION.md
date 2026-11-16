@@ -3,18 +3,18 @@
 _Escribe tus respuestas debajo de cada pregunta._
 
 **Alumno:**
-
+Yasseni de Jesús López Chamé
 ---
 
 ## Paso 1 · Explorando la API
 
 | Pregunta | Mi respuesta |
 |---|---|
-| ¿Cuántos personajes trae cada página? | |
-| ¿Qué campo me dice si existe una página siguiente? | |
-| ¿Qué valor tiene ese campo en la última página? | |
-| ¿Qué código HTTP devuelve una búsqueda sin resultados? | |
-| ¿Qué campos del personaje usa `CharacterCard`? | |
+| ¿Cuántos personajes trae cada página? | 20 personajes |
+| ¿Qué campo me dice si existe una página siguiente? | info.next |
+| ¿Qué valor tiene ese campo en la última página? | null |
+| ¿Qué código HTTP devuelve una búsqueda sin resultados? | "error": "There is nothing here"|
+| ¿Qué campos del personaje usa `CharacterCard`? | id, name, image, status y species (campos habituales para mostrar una tarjeta) |
 
 ## Paso 2 · Petición HTTP
 
